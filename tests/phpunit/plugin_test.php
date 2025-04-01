@@ -1,45 +1,50 @@
 <?php
-// This file is part of Moodle - https://moodle.org/
+// This file is part of Training value plugin for Moodle™.
 //
-// Moodle is free software: you can redistribute it and/or modify
+// This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Moodle is distributed in the hope that it will be useful,
+// This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace customfield_training;
+// phpcs:disable moodle.Files.BoilerplateComment.CommentEndedTooSoon
+
+namespace customfield_mutrain\phpunit;
 
 use core_customfield_test_instance_form;
 
 /**
- * Functional test for customfield_training
+ * Functional test for customfield_mutrain
  *
- * @group      openlms
- * @package    customfield_training
+ * @group      muTMS
+ * @package    customfield_mutrain
  * @copyright  2024 Open LMS (https://www.openlms.net/)
  * @author     Petr Skoda
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * @covers \customfield_mutrain\data_controller
+ * @covers \customfield_mutrain\field_controller
  */
-class plugin_test extends \advanced_testcase {
-
+final class plugin_test extends \advanced_testcase {
     /**
      * Tests set up.
      */
     public function setUp(): void {
+        parent::setUp();
         $this->resetAfterTest();
     }
 
     /**
      * Test for initialising field and data controllers
      */
-    public function test_initialise() {
+    public function test_initialise(): void {
         /** @var \core_customfield_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('core_customfield');
 
@@ -47,21 +52,21 @@ class plugin_test extends \advanced_testcase {
 
         $cfcat = $generator->create_category();
         $cfield1 = $generator->create_field(
-            ['categoryid' => $cfcat->get('id'), 'shortname' => 'myfield1', 'type' => 'training']);
+            ['categoryid' => $cfcat->get('id'), 'shortname' => 'myfield1', 'type' => 'mutrain']);
         $course1 = $this->getDataGenerator()->create_course();
-        $cfdata1 = $generator->add_instance_data($cfield1, $course1->id,1);
+        $cfdata1 = $generator->add_instance_data($cfield1, $course1->id, 1);
 
         $f = \core_customfield\field_controller::create($cfield1->get('id'));
-        $this->assertTrue($f instanceof field_controller);
+        $this->assertTrue($f instanceof \customfield_mutrain\field_controller);
 
-        $f = \core_customfield\field_controller::create(0, (object)['type' => 'training'], $cfcat);
-        $this->assertTrue($f instanceof field_controller);
+        $f = \core_customfield\field_controller::create(0, (object)['type' => 'mutrain'], $cfcat);
+        $this->assertTrue($f instanceof \customfield_mutrain\field_controller);
 
         $d = \core_customfield\data_controller::create($cfdata1->get('id'));
-        $this->assertTrue($d instanceof data_controller);
+        $this->assertTrue($d instanceof \customfield_mutrain\data_controller);
 
         $d = \core_customfield\data_controller::create(0, null, $cfield1);
-        $this->assertTrue($d instanceof data_controller);
+        $this->assertTrue($d instanceof \customfield_mutrain\data_controller);
     }
 
     /**
@@ -69,7 +74,7 @@ class plugin_test extends \advanced_testcase {
      *
      * Create a configuration form and submit it with the same values as in the field
      */
-    public function test_config_form() {
+    public function test_config_form(): void {
         $this->setAdminUser();
 
         /** @var \core_customfield_generator $generator */
@@ -77,7 +82,7 @@ class plugin_test extends \advanced_testcase {
 
         $cfcat = $generator->create_category();
         $cfield1 = $generator->create_field(
-            ['categoryid' => $cfcat->get('id'), 'shortname' => 'myfield1', 'type' => 'training']);
+            ['categoryid' => $cfcat->get('id'), 'shortname' => 'myfield1', 'type' => 'mutrain']);
         $submitdata = (array)$cfield1->to_record();
         $submitdata['configdata'] = $cfield1->get('configdata');
 
@@ -92,7 +97,7 @@ class plugin_test extends \advanced_testcase {
     /**
      * Test for instance form functions
      */
-    public function test_instance_form() {
+    public function test_instance_form(): void {
         global $CFG, $DB;
         require_once($CFG->dirroot . '/customfield/tests/fixtures/test_instance_form.php');
 
@@ -104,9 +109,9 @@ class plugin_test extends \advanced_testcase {
         $handler = $cfcat->get_handler();
         $course1 = $this->getDataGenerator()->create_course();
         $cf1 = $generator->create_field(
-            ['categoryid' => $cfcat->get('id'), 'shortname' => 'myfield1', 'type' => 'training']);
+            ['categoryid' => $cfcat->get('id'), 'shortname' => 'myfield1', 'type' => 'mutrain']);
         $cf2 = $generator->create_field(
-            ['categoryid' => $cfcat->get('id'), 'shortname' => 'myfield2', 'type' => 'training',
+            ['categoryid' => $cfcat->get('id'), 'shortname' => 'myfield2', 'type' => 'mutrain',
                 'configdata' => ['required' => true]]);
         // First try to submit without required field.
         $submitdata = (array)$course1;
@@ -146,19 +151,19 @@ class plugin_test extends \advanced_testcase {
     /**
      * Test for data_controller::get_value and export_value
      */
-    public function test_get_export_value() {
+    public function test_get_export_value(): void {
         /** @var \core_customfield_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('core_customfield');
 
         $cfcat = $generator->create_category();
         $course1 = $this->getDataGenerator()->create_course();
         $cfields1 = $generator->create_field(
-            ['categoryid' => $cfcat->get('id'), 'shortname' => 'myfield1', 'type' => 'training']);
+            ['categoryid' => $cfcat->get('id'), 'shortname' => 'myfield1', 'type' => 'mutrain']);
         $cfields2 = $generator->create_field(
-            ['categoryid' => $cfcat->get('id'), 'shortname' => 'myfield2', 'type' => 'training',
+            ['categoryid' => $cfcat->get('id'), 'shortname' => 'myfield2', 'type' => 'mutrain',
                 'configdata' => ['required' => true]]);
         $cfields3 = $generator->create_field(
-            ['categoryid' => $cfcat->get('id'), 'shortname' => 'myfield3', 'type' => 'training',
+            ['categoryid' => $cfcat->get('id'), 'shortname' => 'myfield3', 'type' => 'mutrain',
                 'configdata' => []]);
 
         $cfdata1 = $generator->add_instance_data($cfields1, $course1->id, 1);
@@ -173,15 +178,15 @@ class plugin_test extends \advanced_testcase {
     }
 
     /**
-     * Deleting fields and data
+     * Deleting fields and data.
      */
-    public function test_delete() {
+    public function test_delete(): void {
         /** @var \core_customfield_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('core_customfield');
 
         $cfcat = $generator->create_category();
         $cfields1 = $generator->create_field(
-            ['categoryid' => $cfcat->get('id'), 'shortname' => 'myfield1', 'type' => 'training']);
+            ['categoryid' => $cfcat->get('id'), 'shortname' => 'myfield1', 'type' => 'mutrain']);
         $cfcat->get_handler()->delete_all();
     }
 }

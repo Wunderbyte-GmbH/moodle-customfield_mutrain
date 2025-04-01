@@ -17,19 +17,14 @@
 // phpcs:disable moodle.Files.BoilerplateComment.CommentEndedTooSoon
 
 /**
- * Training custom field plugin.
+ * Training customfield lang strings.
  *
- * @package    customfield_mutrain
- * @copyright  2025 Petr Skoda
- * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   customfield_mutrain
+ * @copyright 2024 Open LMS (https://www.openlms.net/)
+ * @author    Petr Skoda
+ * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
 
-/** @var stdClass $plugin */
-$plugin->component = 'customfield_mutrain';
-$plugin->version   = 2025041501;
-$plugin->requires  = 2024091700.00; // 4.5.0
-$plugin->maturity  = MATURITY_ALPHA;
-$plugin->supported = [405, 405];
-$plugin->release   = 'mu-4.5.4-03';
+$string['pluginname'] = 'Training value custom field';
+$string['privacy:metadata'] = 'Training value custom field does not store any personal data.';

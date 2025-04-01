@@ -1,27 +1,29 @@
 <?php
-// This file is part of Moodle - https://moodle.org/
+// This file is part of Training value plugin for Moodle™.
 //
-// Moodle is free software: you can redistribute it and/or modify
+// This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Moodle is distributed in the hope that it will be useful,
+// This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace customfield_training;
+// phpcs:disable moodle.Files.BoilerplateComment.CommentEndedTooSoon
 
-use customfield_training\local\framework;
+namespace customfield_mutrain;
+
+use tool_mutrain\local\framework;
 
 /**
- * Data class for training field
+ * Data class for training custom field
  *
- * @package   customfield_training
+ * @package   customfield_mutrain
  * @copyright 2024 Open LMS (https://www.openlms.net/)
  * @author    Petr Skoda
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -32,7 +34,7 @@ class data_controller extends \core_customfield\data_controller {
      * Return the name of the field where the information is stored
      * @return string
      */
-    public function datafield() : string {
+    public function datafield(): string {
         return 'intvalue';
     }
 
@@ -41,7 +43,7 @@ class data_controller extends \core_customfield\data_controller {
      *
      * @param \MoodleQuickForm $mform
      */
-    public function instance_form_definition(\MoodleQuickForm $mform) {
+    public function instance_form_definition(\MoodleQuickForm $mform): void {
         $elementname = $this->get_form_element_name();
         $required = $this->get_field()->get_configdata_property('required');
 
@@ -50,7 +52,7 @@ class data_controller extends \core_customfield\data_controller {
 
         $category = $this->get_field()->get_category();
         if (!framework::is_area_compatible($category->get('component'), $category->get('area'))) {
-            $warning = get_string('error_incompatiblearea', 'customfield_training');
+            $warning = get_string('error_incompatiblearea', 'tool_mutrain');
             $warning = '<div class="alert alert-warning">' . $warning . '</div>';
             $mform->addElement('static', $elementname.'warning', '', $warning);
         }
@@ -67,7 +69,7 @@ class data_controller extends \core_customfield\data_controller {
      * @param array $files
      * @return array
      */
-    public function instance_form_validation(array $data, array $files) : array {
+    public function instance_form_validation(array $data, array $files): array {
         $errors = parent::instance_form_validation($data, $files);
         $elementname = $this->get_form_element_name();
         $required = $this->get_field()->get_configdata_property('required');
@@ -96,7 +98,7 @@ class data_controller extends \core_customfield\data_controller {
      * @param \stdClass $instance custom field instance.
      * @return void
      */
-    public function instance_form_before_set_data(\stdClass $instance) {
+    public function instance_form_before_set_data(\stdClass $instance): void {
         $value = $this->get_value();
         $instance->{$this->get_form_element_name()} = $value;
     }
@@ -130,7 +132,7 @@ class data_controller extends \core_customfield\data_controller {
      *
      * @param \stdClass $datanew data coming from the form
      */
-    public function instance_form_save(\stdClass $datanew) {
+    public function instance_form_save(\stdClass $datanew): void {
         $elementname = $this->get_form_element_name();
 
         if (!property_exists($datanew, $elementname)) {
