@@ -1,3 +1,3 @@
 # Training value custom field for Moodle™
 
-This plugin is required by tool_mutrain / Training plugin.
+This plugin is required by [Training plugin](https://github.com/mutms/moodle-tool_mutrain).
