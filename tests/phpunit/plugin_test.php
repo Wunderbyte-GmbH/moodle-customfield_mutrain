@@ -23,7 +23,7 @@ use core_customfield_test_instance_form;
 /**
  * Functional test for customfield_mutrain
  *
- * @group      muTMS
+ * @group      MuTMS
  * @package    customfield_mutrain
  * @copyright  2024 Open LMS (https://www.openlms.net/)
  * @copyright  2025 Petr Skoda
